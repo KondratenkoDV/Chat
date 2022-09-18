@@ -38,8 +38,8 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetParentCommentsAsync")]
-        public async Task<ActionResult<IEnumerable<SelectedParentCommentDto>>> GetParentCommentsAsync()
+        [HttpGet("GetParentComments")]
+        public async Task<ActionResult<IEnumerable<SelectedParentCommentDto>>> GetParentComments()
         {
             try
             {
@@ -70,8 +70,8 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetCommentsAsync")]
-        public async Task<ActionResult<IEnumerable<SelectedCommentDto>>> GetCommentsAsync()
+        [HttpGet("GetComments")]
+        public async Task<ActionResult<IEnumerable<SelectedCommentDto>>> GetComments()
         {
             try
             {
