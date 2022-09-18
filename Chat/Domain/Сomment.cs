@@ -20,13 +20,16 @@ namespace Domain
 
         public DateTime DateAdded { get; }
 
+        public int ParentId { get; }
+
         public Сomment(
             string userName,
             string email,
             string homePage,
             string text,
             string ip,
-            string browserData)
+            string browserData,
+            int parentId)
         {
             if (string.IsNullOrEmpty(userName))
             {
@@ -59,6 +62,7 @@ namespace Domain
             Text = text;
             Ip = ip;
             BrowserData = browserData;
+            ParentId = parentId;
 
             DateAdded = DateTime.Now;
         }
