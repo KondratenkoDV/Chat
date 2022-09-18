@@ -44,6 +44,9 @@ namespace Persistence.Configurations
             builder
                 .Property(c => c.DateAdded)
                 .IsRequired();
+
+            builder
+                .Property(c => c.ParentId);
         }
     }
 }
