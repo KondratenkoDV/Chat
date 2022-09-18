@@ -14,8 +14,8 @@ namespace Domain.Interfaces
             int parentId,
             CancellationToken cancellationToken);
 
-        Task<IEnumerable<Domain.Сomment>> SelectingParentCommentsAsync();
+        Task<IEnumerable<Сomment>> SelectingParentCommentsAsync();
 
-        Task<IEnumerable<Domain.Сomment>> SelectingCommentsAsync();
+        Task<IEnumerable<Сomment>> SelectingCommentsAsync();
     }
 }
