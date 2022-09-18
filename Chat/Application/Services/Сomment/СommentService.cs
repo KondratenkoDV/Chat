@@ -4,7 +4,7 @@ using System;
 
 namespace Application.Services.Сomment
 {
-    public class СommentService
+    public class СommentService : IСommentService
     {
         private readonly IDbContext _dbContext;
 
