@@ -1,4 +1,4 @@
-﻿using API.DTOs.Сomment;
+﻿using API.DTOs.Comment;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +8,9 @@ namespace API.Controllers
     [ApiController]
     public class СommentController : ControllerBase
     {
-        private readonly IСommentService _сommentService;
+        private readonly ICommentService _сommentService;
 
-        public СommentController(IСommentService сommentService)
+        public СommentController(ICommentService сommentService)
         {
             _сommentService = сommentService;
         }

@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces
 {
-    public interface IСommentService
+    public interface ICommentService
     {
         Task<int> AddAsync(
             string userName,

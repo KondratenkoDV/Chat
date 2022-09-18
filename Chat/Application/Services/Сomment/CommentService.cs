@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Application.Services.Сomment
+namespace Application.Services.Comment
 {
-    public class СommentService : IСommentService
+    public class CommentService : ICommentService
     {
         private readonly IDbContext _dbContext;
 
-        public СommentService(IDbContext dbContext)
+        public CommentService(IDbContext dbContext)
         {
             _dbContext = dbContext;
         }

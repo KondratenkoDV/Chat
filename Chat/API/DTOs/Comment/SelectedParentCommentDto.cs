@@ -1,4 +1,4 @@
-﻿namespace API.DTOs.Сomment
+﻿namespace API.DTOs.Comment
 {
     public class SelectedParentCommentDto
     {

@@ -1,6 +1,6 @@
-using API.DTOs.?omment;
-using API.Helpers.?omment;
-using Application.Services.?omment;
+using API.DTOs.Comment;
+using API.Helpers.Comment;
+using Application.Services.Comment;
 using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -46,7 +46,7 @@ namespace API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<I?ommentService, ?ommentService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
         }
 
         public static void Validator(WebApplicationBuilder builder)
