@@ -10,7 +10,7 @@ namespace Domain
 
         public string Email { get; }
 
-        public string HomePage { get; }
+        public string? HomePage { get; }
 
         public string Text { get; }
 
@@ -20,7 +20,7 @@ namespace Domain
 
         public DateTime DateAdded { get; }
 
-        public int ParentId { get; }
+        public int? ParentId { get; }
 
         public Сomment(
             string userName,
