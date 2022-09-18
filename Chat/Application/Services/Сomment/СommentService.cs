@@ -16,11 +16,11 @@ namespace Application.Services.Сomment
         public async Task<int> AddAsync(
             string userName,
             string email,
-            string homePage,
+            string? homePage,
             string text,
             string ip,
             string browserData,
-            int parentId,
+            int? parentId,
             CancellationToken cancellationToken)
         {
             var comment = new Domain.Сomment(
