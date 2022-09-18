@@ -27,11 +27,17 @@ namespace API
 
             Validator(builder);
 
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
 
             if (builder.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+
+                app.UseSwaggerUI();
             }
 
             app.MapControllers();
