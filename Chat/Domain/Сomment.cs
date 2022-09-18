@@ -25,11 +25,11 @@ namespace Domain
         public Сomment(
             string userName,
             string email,
-            string homePage,
+            string? homePage,
             string text,
             string ip,
             string browserData,
-            int parentId)
+            int? parentId)
         {
             if (string.IsNullOrEmpty(userName))
             {

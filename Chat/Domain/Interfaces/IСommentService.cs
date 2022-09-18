@@ -7,11 +7,11 @@ namespace Domain.Interfaces
         Task<int> AddAsync(
             string userName,
             string email,
-            string homePage,
+            string? homePage,
             string text,
             string ip,
             string browserData,
-            int parentId,
+            int? parentId,
             CancellationToken cancellationToken);
 
         Task<IEnumerable<Сomment>> SelectingParentCommentsAsync();
