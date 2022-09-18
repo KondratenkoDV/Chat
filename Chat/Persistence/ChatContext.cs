@@ -1,11 +1,12 @@
 ﻿using Domain;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Configurations;
 using System;
 
 namespace Persistence
 {
-    public class ChatContext : DbContext
+    public class ChatContext : DbContext, IDbContext
     {
         public DbSet<Сomment> Сomments { get; set; } = null!;
 
