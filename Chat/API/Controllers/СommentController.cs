@@ -1,4 +1,7 @@
 ﻿using API.DTOs.Comment;
+using API.DTOs.Common;
+using Domain.Common;
+using Domain.Common.Comment;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,16 +41,27 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetParentComments")]
-        public async Task<ActionResult<IEnumerable<SelectedParentCommentDto>>> GetParentComments()
+        [HttpGet]
+        public async Task<ActionResult<PagedDto<SelectedParentCommentDto>>> GetParentComments(
+            [FromQuery] QueryPaginationDto queryPaginationDto,
+            CancellationToken cancellationToken)
         {
             try
             {
-                var comments = await _сommentService.SelectingParentCommentsAsync();
+                var commentRequest = new CommentRequest()
+                {
+                    UserName = queryPaginationDto.UserName,
+                    Email = queryPaginationDto.Email,
+                    SortDown = queryPaginationDto.SortDown,
+                    PageNumber = queryPaginationDto.PageNumber,
+                    PageSize = queryPaginationDto.PageSize
+                };
+
+                var comments = await _сommentService.SelectingParentCommentsAsync(commentRequest, cancellationToken);
 
                 var selectedParentCommentDto = new List<SelectedParentCommentDto>();
 
-                foreach (var comment in comments)
+                foreach (var comment in comments.Entities)
                 {
                     selectedParentCommentDto.Add(new SelectedParentCommentDto()
                     {
@@ -62,7 +76,11 @@ namespace API.Controllers
                     });
                 }
 
-                return Ok(selectedParentCommentDto);
+                return Ok(new PagedDto<SelectedParentCommentDto>()
+                {
+                    Entities = selectedParentCommentDto,
+                    PaginationMetadata = comments.PaginationMetadata
+                });
             }
             catch (Exception ex)
             {
@@ -70,12 +88,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetComments")]
-        public async Task<ActionResult<IEnumerable<SelectedCommentDto>>> GetComments()
+        [HttpGet("{parentId}")]
+        public async Task<ActionResult<IEnumerable<SelectedCommentDto>>> GetComments(int parentId, CancellationToken cancellationToken)
         {
             try
             {
-                var comments = await _сommentService.SelectingCommentsAsync();
+                var comments = await _сommentService.SelectingCommentsAsync(parentId, cancellationToken);
 
                 var selectedCommentDto = new List<SelectedCommentDto>();
 
