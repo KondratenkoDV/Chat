@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.Common;
+using Domain.Common.Comment;
+using System;
 
 namespace Domain.Interfaces
 {
@@ -14,8 +16,10 @@ namespace Domain.Interfaces
             int? parentId,
             CancellationToken cancellationToken);
 
-        Task<IEnumerable<Сomment>> SelectingParentCommentsAsync();
+        Task<PagedResponse<Сomment, CommentResponse>> SelectingParentCommentsAsync(
+            CommentRequest request,
+            CancellationToken cancellationToken);
 
-        Task<IEnumerable<Сomment>> SelectingCommentsAsync();
+        Task<IEnumerable<Сomment>> SelectingCommentsAsync(CancellationToken cancellationToken);
     }
 }

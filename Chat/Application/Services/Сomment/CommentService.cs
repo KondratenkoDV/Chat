@@ -1,4 +1,8 @@
-﻿using Domain.Interfaces;
+﻿
+using Domain.Common;
+using Domain.Common.Comment;
+using Domain;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -38,14 +42,102 @@ namespace Application.Services.Comment
             return comment.Id;
         }
 
-        public async Task<IEnumerable<Domain.Сomment>> SelectingParentCommentsAsync()
+        public async Task<PagedResponse<Сomment, CommentResponse>> SelectingParentCommentsAsync(
+            CommentRequest request, 
+            CancellationToken cancellationToken)
         {
-            return await _dbContext.Сomments.Where(c => c.ParentId.HasValue == false).ToListAsync();
+            var comments = await Sort(request);
+
+            return await PagedResponse<Сomment, CommentResponse>.CreateAsync(
+                Map,
+                comments,
+                request.PaginationParameters.PageNumber,
+                request.PaginationParameters.PageSize,
+                cancellationToken);
         }
 
-        public async Task<IEnumerable<Domain.Сomment>> SelectingCommentsAsync()
+        public async Task<IEnumerable<Сomment>> SelectingCommentsAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Сomments.Where(c => c.ParentId.HasValue).ToListAsync();
+            return await _dbContext.Сomments
+                .Where(c => c.ParentId.HasValue)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+        }
+
+        private CommentResponse Map(Сomment сomment)
+        {
+            return new CommentResponse()
+            {
+                Id = сomment.Id,
+                UserName = сomment.UserName,
+                Email = сomment.Email,
+                HomePage = сomment.HomePage,
+                Text = сomment.Text,
+                Ip = сomment.Ip,
+                BrowserData = сomment.BrowserData,
+                DateAdded = сomment.DateAdded
+            };
+        }
+
+        private async Task<IQueryable<Сomment>> Sort(CommentRequest request)
+        {
+            if (request.UserName)
+            {
+                switch(request.SortDown)
+                {
+                    case true:
+
+                        return _dbContext.Сomments
+                            .OrderByDescending(c => c.UserName)
+                            .AsNoTracking();
+
+                    case false:
+
+                        return _dbContext.Сomments
+                            .OrderBy(c => c.UserName)
+                            .AsNoTracking();
+                }
+            }
+
+            if(request.Email)
+            {
+                switch (request.SortDown)
+                {
+                    case true:
+
+                        return _dbContext.Сomments
+                            .OrderByDescending(c => c.Email)
+                            .AsNoTracking();
+
+                    case false:
+
+                        return _dbContext.Сomments
+                            .OrderBy(c => c.Email)
+                            .AsNoTracking();
+                }
+            }
+
+            if (request.DateAdded)
+            {
+                switch (request.SortDown)
+                {
+                    case true:
+
+                        return _dbContext.Сomments
+                            .OrderByDescending(c => c.DateAdded)
+                            .AsNoTracking();
+
+                    case false:
+
+                        return _dbContext.Сomments
+                            .OrderBy(c => c.DateAdded)
+                            .AsNoTracking();
+                }
+            }
+
+            return _dbContext.Сomments
+                .Where(c => c.ParentId.HasValue == false)
+                .AsNoTracking();
         }
     }
 }
