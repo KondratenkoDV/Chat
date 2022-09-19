@@ -2,7 +2,7 @@
 
 namespace Domain.Common.Comment
 {
-    public class CommentRequest : PagedRequest
+    public class CommentRequest : PaginationParameters
     {
         public bool UserName { get; set; } = false;
 
