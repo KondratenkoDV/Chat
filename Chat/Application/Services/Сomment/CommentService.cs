@@ -1,7 +1,7 @@
 ﻿
 using Domain.Common;
-using Domain.Common.Comment;
 using Domain;
+using Domain.Common.Comment;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,7 +27,7 @@ namespace Application.Services.Comment
             int? parentId,
             CancellationToken cancellationToken)
         {
-            var comment = new Domain.Сomment(
+            var comment = new Сomment(
                 userName,
                 email,
                 homePage,
@@ -47,15 +47,15 @@ namespace Application.Services.Comment
             CancellationToken cancellationToken)
         {
             var comments = _dbContext.Сomments
-                .Where(c => c.ParentId.HasValue == false)
+                .Where(c => !c.ParentId.HasValue)
                 .AsNoTracking();
 
             comments = Sort(request, comments).AsNoTracking();
 
             return await PagedResponse<Сomment>.CreateAsync(
                 comments,
-                request.PaginationParameters.PageNumber,
-                request.PaginationParameters.PageSize,
+                request.PageNumber,
+                request.PageSize,
                 cancellationToken);
         }
 
