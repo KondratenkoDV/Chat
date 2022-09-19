@@ -8,8 +8,6 @@ namespace Domain.Common.Comment
 
         public bool Email { get; set; } = false;
 
-        public bool DateAdded { get; set; } = false;
-
         public bool SortDown { get; set; } = true;
     }
 }

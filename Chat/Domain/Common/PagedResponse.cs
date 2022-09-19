@@ -3,9 +3,9 @@ using System;
 
 namespace Domain.Common
 {
-    public class PagedResponse<T, TM>
+    public class PagedResponse<T>
     {
-        public IEnumerable<TM> Entities { get; }
+        public IEnumerable<T> Entities { get; }
 
         public PaginationMetadata PaginationMetadata { get; }
 
@@ -14,7 +14,7 @@ namespace Domain.Common
         public bool HasNext => PaginationMetadata.CurrentPage < PaginationMetadata.TotalPages;
 
         public PagedResponse(
-            IEnumerable<TM> items,
+            IEnumerable<T> items,
             int count,
             int pageNumber,
             int pageSize)
@@ -26,8 +26,7 @@ namespace Domain.Common
             Entities = items;
         }
 
-        public static async Task<PagedResponse<T, TM>> CreateAsync(
-            Func<T, TM> mapPredicate,
+        public static async Task<PagedResponse<T>> CreateAsync(
             IQueryable<T> source,
             int pageNumber,
             int pageSize,
@@ -39,8 +38,8 @@ namespace Domain.Common
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
 
-            return new PagedResponse<T, TM>(
-                items.Select(mapPredicate),
+            return new PagedResponse<T>(
+                items,
                 count,
                 pageNumber,
                 pageSize);

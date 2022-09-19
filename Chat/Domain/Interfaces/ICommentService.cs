@@ -16,7 +16,7 @@ namespace Domain.Interfaces
             int? parentId,
             CancellationToken cancellationToken);
 
-        Task<PagedResponse<Сomment, CommentResponse>> SelectingParentCommentsAsync(
+        Task<PagedResponse<Сomment>> SelectingParentCommentsAsync(
             CommentRequest request,
             CancellationToken cancellationToken);
 

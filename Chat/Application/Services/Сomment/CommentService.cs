@@ -42,14 +42,17 @@ namespace Application.Services.Comment
             return comment.Id;
         }
 
-        public async Task<PagedResponse<Сomment, CommentResponse>> SelectingParentCommentsAsync(
+        public async Task<PagedResponse<Сomment>> SelectingParentCommentsAsync(
             CommentRequest request, 
             CancellationToken cancellationToken)
         {
-            var comments = await Sort(request);
+            var comments = _dbContext.Сomments
+                .Where(c => c.ParentId.HasValue == false)
+                .AsNoTracking();
 
-            return await PagedResponse<Сomment, CommentResponse>.CreateAsync(
-                Map,
+            comments = Sort(request, comments);
+
+            return await PagedResponse<Сomment>.CreateAsync(
                 comments,
                 request.PaginationParameters.PageNumber,
                 request.PaginationParameters.PageSize,
@@ -60,26 +63,12 @@ namespace Application.Services.Comment
         {
             return await _dbContext.Сomments
                 .Where(c => c.ParentId.HasValue)
+                .OrderBy(c => c.DateAdded)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
 
-        private CommentResponse Map(Сomment сomment)
-        {
-            return new CommentResponse()
-            {
-                Id = сomment.Id,
-                UserName = сomment.UserName,
-                Email = сomment.Email,
-                HomePage = сomment.HomePage,
-                Text = сomment.Text,
-                Ip = сomment.Ip,
-                BrowserData = сomment.BrowserData,
-                DateAdded = сomment.DateAdded
-            };
-        }
-
-        private async Task<IQueryable<Сomment>> Sort(CommentRequest request)
+        private IQueryable<Сomment> Sort(CommentRequest request, IQueryable<Сomment> сomments)
         {
             if (request.UserName)
             {
@@ -87,14 +76,14 @@ namespace Application.Services.Comment
                 {
                     case true:
 
-                        return _dbContext.Сomments
-                            .OrderByDescending(c => c.UserName)
+                        return сomments
+                            .OrderBy(c => c.UserName)
                             .AsNoTracking();
 
                     case false:
 
-                        return _dbContext.Сomments
-                            .OrderBy(c => c.UserName)
+                        return сomments
+                            .OrderByDescending(c => c.UserName)
                             .AsNoTracking();
                 }
             }
@@ -105,39 +94,28 @@ namespace Application.Services.Comment
                 {
                     case true:
 
-                        return _dbContext.Сomments
-                            .OrderByDescending(c => c.Email)
-                            .AsNoTracking();
-
-                    case false:
-
-                        return _dbContext.Сomments
+                        return сomments
                             .OrderBy(c => c.Email)
                             .AsNoTracking();
-                }
-            }
-
-            if (request.DateAdded)
-            {
-                switch (request.SortDown)
-                {
-                    case true:
-
-                        return _dbContext.Сomments
-                            .OrderByDescending(c => c.DateAdded)
-                            .AsNoTracking();
 
                     case false:
 
-                        return _dbContext.Сomments
-                            .OrderBy(c => c.DateAdded)
+                        return сomments
+                            .OrderByDescending(c => c.Email)
                             .AsNoTracking();
                 }
             }
 
-            return _dbContext.Сomments
-                .Where(c => c.ParentId.HasValue == false)
-                .AsNoTracking();
+            if (request.SortDown == false)
+            {
+                return сomments
+                    .OrderByDescending(c => c.DateAdded)
+                    .AsNoTracking();
+            }
+
+            return сomments
+                    .OrderBy(c => c.DateAdded)
+                    .AsNoTracking(); ;
         }
     }
 }
