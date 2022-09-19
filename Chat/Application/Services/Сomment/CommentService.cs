@@ -50,7 +50,7 @@ namespace Application.Services.Comment
                 .Where(c => c.ParentId.HasValue == false)
                 .AsNoTracking();
 
-            comments = Sort(request, comments);
+            comments = Sort(request, comments).AsNoTracking();
 
             return await PagedResponse<Сomment>.CreateAsync(
                 comments,
@@ -59,10 +59,10 @@ namespace Application.Services.Comment
                 cancellationToken);
         }
 
-        public async Task<IEnumerable<Сomment>> SelectingCommentsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Сomment>> SelectingCommentsAsync(int parentId, CancellationToken cancellationToken)
         {
             return await _dbContext.Сomments
-                .Where(c => c.ParentId.HasValue)
+                .Where(c => c.ParentId == parentId)
                 .OrderBy(c => c.DateAdded)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
@@ -77,14 +77,12 @@ namespace Application.Services.Comment
                     case true:
 
                         return сomments
-                            .OrderBy(c => c.UserName)
-                            .AsNoTracking();
+                            .OrderBy(c => c.UserName);
 
                     case false:
 
                         return сomments
-                            .OrderByDescending(c => c.UserName)
-                            .AsNoTracking();
+                            .OrderByDescending(c => c.UserName);
                 }
             }
 
@@ -95,27 +93,23 @@ namespace Application.Services.Comment
                     case true:
 
                         return сomments
-                            .OrderBy(c => c.Email)
-                            .AsNoTracking();
+                            .OrderBy(c => c.Email);
 
                     case false:
 
                         return сomments
-                            .OrderByDescending(c => c.Email)
-                            .AsNoTracking();
+                            .OrderByDescending(c => c.Email);
                 }
             }
 
             if (request.SortDown == false)
             {
                 return сomments
-                    .OrderByDescending(c => c.DateAdded)
-                    .AsNoTracking();
+                    .OrderByDescending(c => c.DateAdded);
             }
 
             return сomments
-                    .OrderBy(c => c.DateAdded)
-                    .AsNoTracking(); ;
+                    .OrderBy(c => c.DateAdded);
         }
     }
 }

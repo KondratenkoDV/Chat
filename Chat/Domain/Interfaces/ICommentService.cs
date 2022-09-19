@@ -20,6 +20,6 @@ namespace Domain.Interfaces
             CommentRequest request,
             CancellationToken cancellationToken);
 
-        Task<IEnumerable<Сomment>> SelectingCommentsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<Сomment>> SelectingCommentsAsync(int parentId, CancellationToken cancellationToken);
     }
 }
