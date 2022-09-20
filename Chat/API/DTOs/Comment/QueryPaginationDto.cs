@@ -1,8 +1,9 @@
-﻿using Domain.Common;
+﻿
+using API.DTOs.Common;
 
 namespace API.DTOs.Comment
 {
-    public class QueryPaginationDto : PaginationParameters
+    public class QueryPaginationDto : PaginationParametersDto
     {
         public bool UserName { get; set; } = false;
 
