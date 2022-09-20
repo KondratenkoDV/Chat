@@ -48,14 +48,7 @@ namespace API.Controllers
         {
             try
             {
-                var commentRequest = new CommentRequest()
-                {
-                    UserName = queryPaginationDto.UserName,
-                    Email = queryPaginationDto.Email,
-                    SortDown = queryPaginationDto.SortDown,
-                    PageNumber = queryPaginationDto.PageNumber,
-                    PageSize = queryPaginationDto.PageSize
-                };
+                var commentRequest = GetCommentRequest(queryPaginationDto);
 
                 var comments = await _сommentService.SelectingParentCommentsAsync(commentRequest, cancellationToken);
 
@@ -89,15 +82,20 @@ namespace API.Controllers
         }
 
         [HttpGet("{parentId}")]
-        public async Task<ActionResult<IEnumerable<SelectedCommentDto>>> GetComments(int parentId, CancellationToken cancellationToken)
+        public async Task<ActionResult<PagedDto<SelectedParentCommentDto>>> GetComments(
+            int parentId,
+            [FromQuery] QueryPaginationDto queryPaginationDto,
+            CancellationToken cancellationToken)
         {
             try
             {
-                var comments = await _сommentService.SelectingCommentsAsync(parentId, cancellationToken);
+                var commentRequest = GetCommentRequest(queryPaginationDto);
+
+                var comments = await _сommentService.SelectingCommentsAsync(parentId, commentRequest, cancellationToken);
 
                 var selectedCommentDto = new List<SelectedCommentDto>();
 
-                foreach (var comment in comments)
+                foreach (var comment in comments.Entities)
                 {
                     selectedCommentDto.Add(new SelectedCommentDto()
                     {
@@ -113,12 +111,28 @@ namespace API.Controllers
                     });
                 }
 
-                return Ok(selectedCommentDto);
+                return Ok(new PagedDto<SelectedCommentDto>()
+                {
+                    Entities = selectedCommentDto,
+                    PaginationMetadata = comments.PaginationMetadata
+                });
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
+            }            
+        }
+
+        private CommentRequest GetCommentRequest(QueryPaginationDto queryPaginationDto)
+        {
+            return new CommentRequest()
+            {
+                UserName = queryPaginationDto.UserName,
+                Email = queryPaginationDto.Email,
+                SortDown = queryPaginationDto.SortDown,
+                PageNumber = queryPaginationDto.PageNumber,
+                PageSize = queryPaginationDto.PageSize
+            };
         }
     }
 }
