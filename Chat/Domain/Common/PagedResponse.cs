@@ -9,10 +9,6 @@ namespace Domain.Common
 
         public PaginationMetadata PaginationMetadata { get; }
 
-        public bool HasPrevious => PaginationMetadata.CurrentPage > 1;
-
-        public bool HasNext => PaginationMetadata.CurrentPage < PaginationMetadata.TotalPages;
-
         public PagedResponse(
             IEnumerable<T> items,
             int count,
