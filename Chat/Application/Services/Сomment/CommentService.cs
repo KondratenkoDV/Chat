@@ -50,22 +50,19 @@ namespace Application.Services.Comment
                 .Where(c => !c.ParentId.HasValue)
                 .AsNoTracking();
 
-            comments = Sort(request, comments).AsNoTracking();
-
-            return await PagedResponse<Сomment>.CreateAsync(
-                comments,
-                request.PageNumber,
-                request.PageSize,
-                cancellationToken);
+            return await GetPagedResponseAsync(request, comments, cancellationToken);
         }
 
-        public async Task<IEnumerable<Сomment>> SelectingCommentsAsync(int parentId, CancellationToken cancellationToken)
+        public async Task<PagedResponse<Сomment>> SelectingCommentsAsync(
+            int parentId,
+            CommentRequest request,
+            CancellationToken cancellationToken)
         {
-            return await _dbContext.Сomments
+            var comments = _dbContext.Сomments
                 .Where(c => c.ParentId == parentId)
-                .OrderBy(c => c.DateAdded)
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+                .AsNoTracking();
+
+            return await GetPagedResponseAsync(request, comments, cancellationToken);
         }
 
         private IQueryable<Сomment> Sort(CommentRequest request, IQueryable<Сomment> сomments)
@@ -110,6 +107,20 @@ namespace Application.Services.Comment
 
             return сomments
                     .OrderBy(c => c.DateAdded);
+        }
+
+        private async Task<PagedResponse<Сomment>> GetPagedResponseAsync(
+            CommentRequest request,
+            IQueryable<Сomment> сomments,
+            CancellationToken cancellationToken)
+        {
+            сomments = Sort(request, сomments).AsNoTracking();
+
+            return await PagedResponse<Сomment>.CreateAsync(
+                сomments,
+                request.PageNumber,
+                request.PageSize,
+                cancellationToken);
         }
     }
 }
