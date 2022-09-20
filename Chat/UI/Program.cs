@@ -54,7 +54,7 @@ namespace UI
 
         public static void Validator(WebApplicationBuilder builder)
         {
-            //builder.Services.AddScoped<IValidator<CreateClientModel>, CreateClientModelValidator>();
+            //builder.Services.AddScoped<IValidator<l>, >();
         }
     }
 }
