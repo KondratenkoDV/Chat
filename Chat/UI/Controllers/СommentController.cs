@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net.Http;
 using UI.Helpers;
 using UI.Models.Comment;
 using UI.Models.Common;
 
 namespace UI.Controllers
 {
-    public class СommentController : Controller
+    public class CommentController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ApiConfiguration _baseUrl;
 
-        public СommentController(IHttpClientFactory httpClientFactory, IOptions<ApiConfiguration> options)
+        public CommentController(IHttpClientFactory httpClientFactory, IOptions<ApiConfiguration> options)
         {
             _httpClientFactory = httpClientFactory;
             _baseUrl = options.Value;
@@ -24,7 +25,7 @@ namespace UI.Controllers
             {
                 var httpClient = _httpClientFactory.CreateClient();
 
-                var httpResponseMessage = await httpClient.PostAsJsonAsync($"{_baseUrl.Api}/Comment/", createCommentModel);
+                var httpResponseMessage = await httpClient.PostAsJsonAsync($"{_baseUrl.Api}/Сomment/", createCommentModel);
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
@@ -35,7 +36,7 @@ namespace UI.Controllers
                     return View(id);
                 }
 
-                return RedirectToAction("");
+                return View();
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@ namespace UI.Controllers
                     pagedModel = JsonConvert.DeserializeObject<PagedModel<SelectedParentCommentModel>>(commentResponse);
                 }
 
-                return RedirectToAction("Shared/_Layout", pagedModel);
+                return View(pagedModel);
             }
             catch (Exception ex)
             {
@@ -85,7 +86,7 @@ namespace UI.Controllers
                     pagedModel = JsonConvert.DeserializeObject<PagedModel<SelectedCommentModel>>(commentResponse);
                 }
 
-                return RedirectToAction("Shared/_Layout", pagedModel);
+                return View(pagedModel);
             }
             catch (Exception ex)
             {
