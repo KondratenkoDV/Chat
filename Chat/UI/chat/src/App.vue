@@ -1,11 +1,8 @@
 <template>
   <v-app>
     <v-app-bar color="deep-purple accent-4" dense dark app>
-      <v-toolbar-title>Chat</v-toolbar-title>
-      <v-btn icon>
-        <v-icon>mdi-pencil</v-icon>
-      </v-btn>
-      
+      <v-toolbar-title>Chat</v-toolbar-title>      
+        <AddNewComment />
       <template v-if="$vuetify.breakpoint.mdAndUp">
               <v-spacer></v-spacer>
 
@@ -50,10 +47,13 @@
 
 <script>
 import {variables} from "./api";
+import AddNewComment from "./components/AddNewComment.vue";
 export default {
+  components: {
+    AddNewComment
+  },
   data(){
     return {
-      message: 'Comments',
       sortDesc: false,
       sortBy: 'name',
       parentComments: [],
