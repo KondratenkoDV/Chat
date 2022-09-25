@@ -8,11 +8,11 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class СommentController : ControllerBase
+    public class CommentController : ControllerBase
     {
         private readonly ICommentService _сommentService;
 
-        public СommentController(ICommentService сommentService)
+        public CommentController(ICommentService сommentService)
         {
             _сommentService = сommentService;
         }

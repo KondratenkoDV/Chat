@@ -53,6 +53,8 @@ namespace API
             });
 
             builder.Services.AddScoped<ICommentService, CommentService>();
+
+            builder.Services.AddCors();
         }
 
         public static void Validator(WebApplicationBuilder builder)
