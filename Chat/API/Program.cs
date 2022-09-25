@@ -38,6 +38,8 @@ namespace API
                 app.UseSwagger();
 
                 app.UseSwaggerUI();
+
+                app.UseCors(builder => builder.AllowAnyOrigin());
             }
 
             app.MapControllers();
