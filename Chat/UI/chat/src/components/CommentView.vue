@@ -1,8 +1,31 @@
 <template>
     <div app>
-        <tr v-for="com in parentComments.entities" :key="com.Id">
-            <td></td>
-        </tr>
+      <div 
+        v-for="com in parentComments.entities" 
+        :key="com.Id">
+          <thead>
+            <tr>              
+              <th>
+                <v-avatar color="indigo">
+                  <v-icon dark>
+                    mdi-account-circle
+                  </v-icon>
+                </v-avatar>
+              </th>
+              <th>
+                {{com.selectedUserName}}
+              </th>
+              <th>
+                {{com.selectedDateAdded | date('date')}} at {{com.selectedDateAdded | date('time')}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{com.selectedText}}</td>
+            </tr>
+          </tbody>
+      </div>
     </div>
 </template>
 
@@ -12,12 +35,12 @@ import {variables} from "../api";
 export default {
     data(){
     return {
-        parentComments: {
-            entities: [],
-            paginationMetadata: {
-                
-            }
-        },
+      parentComments: {
+        entities: [],
+        paginationMetadata: {
+            
+        }
+      },
     }
   },
   methods: {
@@ -35,26 +58,11 @@ export default {
 </script>
 
 <style scoped>
-p {
-    text-align: justify;
-    text-indent: 30px;
-    font-family: Serif;
-    font-size: 14px;
-    }
-h1, h2, h3 {
-    color: blue; /* тоже самое, что и #0000FF */
-}
 table, img {border: none;}
-li a {text-decoration: none;}
-div, th, td {
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: yellow;
+thead, th {
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: #BBDEFB;
+    flex-basis: 25%;
 }
-a {color: black; font-weight: bold;}
-p a, li a {font-weight: normal; text-decoration: none;}
-p a:hover, li a:hover {
-    color: #00FF00; text-decoration: underline;
-    }
-    
 </style>

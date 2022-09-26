@@ -14,8 +14,6 @@
 
         public string BrowserData { get; set; }
 
-        public DateTime DateAdded { get; set; }
-
         public int? ParentId { get; set; }
     }
 }
